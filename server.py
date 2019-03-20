@@ -18,26 +18,11 @@ class Handler(http.server.BaseHTTPRequestHandler):
         return
 
     def do_POST(self):
-        # Parse the form data posted
-        form = cgi.FieldStorage(
-            fp=self.rfile,
-            headers=self.headers,
-            environ={'REQUEST_METHOD':'POST',
-                     'CONTENT_TYPE':self.headers['Content-Type'],
-                     })
-
-        print(self.rfile)
-
-        # Begin the response
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write('Client: %s\n' % str(self.client_address))
-        self.wfile.write('User-agent: %s\n' % str(self.headers['user-agent']))
-        self.wfile.write('Path: %s\n' % self.path)
-        self.wfile.write('Form data:\n')
-
+        content_len = int(self.headers.get('Content-Length'))
+        print(self.headers)
+        post_body = self.rfile.read(1)
+        print(post_body)
         return
-
 try:
     # with socketserver.TCPServer(("", PORT), Handler) as httpd:
     httpd = socketserver.TCPServer(("", PORT), Handler)
