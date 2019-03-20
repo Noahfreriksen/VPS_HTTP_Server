@@ -16,6 +16,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(bytes("1", 'UTF-8'))
         return
 
+    def do_POST(self):
+        content_len = int(self.headers.get('Content-Length'))
+        post_body = self.rfile.read(content_len)
+        print('Message that is received: ')
+        print(post_body)
+
 try:
     # with socketserver.TCPServer(("", PORT), Handler) as httpd:
     httpd = socketserver.TCPServer(("", PORT), Handler)
