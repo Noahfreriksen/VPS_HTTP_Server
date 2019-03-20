@@ -22,3 +22,7 @@ httpd = socketserver.TCPServer(("", PORT), Handler)
 print("serving at port", PORT)
 httpd.serve_forever()
 
+KeyboardInterrupt:
+print 'stopped'
+httpd.socket.close()
+
