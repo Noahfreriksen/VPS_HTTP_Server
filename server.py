@@ -16,13 +16,13 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(1)
         return
 
+try:
+    # with socketserver.TCPServer(("", PORT), Handler) as httpd:
+    httpd = socketserver.TCPServer(("", PORT), Handler)
+    print("serving at port", PORT)
+    httpd.serve_forever()
 
-# with socketserver.TCPServer(("", PORT), Handler) as httpd:
-httpd = socketserver.TCPServer(("", PORT), Handler)
-print("serving at port", PORT)
-httpd.serve_forever()
-
-KeyboardInterrupt:
-print 'stopped'
-httpd.socket.close()
+except KeyboardInterrupt:
+    print('stopped')
+    httpd.socket.close()
 
