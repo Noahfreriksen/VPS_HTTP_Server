@@ -11,6 +11,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
 
     # Handler for the GET requests
     def do_GET(self):
+        global led
         self.send_response(200)
         self.send_header('Content-type','text/html')
         self.end_headers()
@@ -19,6 +20,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         return
 
     def do_POST(self):
+        global led
         content_len = int(self.headers.get('Content-Length'))
         print(self.headers)
         post_body = self.rfile.read(1)
