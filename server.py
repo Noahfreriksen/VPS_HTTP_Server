@@ -1,5 +1,6 @@
 import http.server
 import socketserver
+import cgi
 
 PORT = 8081
 # Handler = http.server.SimpleHTTPRequestHandler
@@ -17,10 +18,25 @@ class Handler(http.server.BaseHTTPRequestHandler):
         return
 
     def do_POST(self):
-        content_len = int(self.headers.get('Content-Length'))
-        post_body = self.rfile.read(content_len)
-        print('Message that is received: ')
-        print(post_body)
+        # Parse the form data posted
+        form = cgi.FieldStorage(
+            fp=self.rfile,
+            headers=self.headers,
+            environ={'REQUEST_METHOD':'POST',
+                     'CONTENT_TYPE':self.headers['Content-Type'],
+                     })
+
+        print(self.rfile)
+
+        # Begin the response
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write('Client: %s\n' % str(self.client_address))
+        self.wfile.write('User-agent: %s\n' % str(self.headers['user-agent']))
+        self.wfile.write('Path: %s\n' % self.path)
+        self.wfile.write('Form data:\n')
+
+        return
 
 try:
     # with socketserver.TCPServer(("", PORT), Handler) as httpd:
