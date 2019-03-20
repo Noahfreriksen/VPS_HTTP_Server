@@ -13,7 +13,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_header('Content-type','text/html')
         self.end_headers()
         # Send the html message
-        self.wfile.write("1")
+        self.wfile.write(bytes("1", 'UTF-8'))
         return
 
 try:
