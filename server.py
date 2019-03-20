@@ -5,6 +5,7 @@ import cgi
 PORT = 8081
 # Handler = http.server.SimpleHTTPRequestHandler
 
+led = "0"
 
 class Handler(http.server.BaseHTTPRequestHandler):
 
@@ -14,7 +15,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         self.send_header('Content-type','text/html')
         self.end_headers()
         # Send the html message
-        self.wfile.write(bytes("1", 'UTF-8'))
+        self.wfile.write(bytes(led, 'UTF-8'))
         return
 
     def do_POST(self):
@@ -22,6 +23,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
         print(self.headers)
         post_body = self.rfile.read(1)
         print(post_body)
+        led = post_body.decode("utf-8")
         return
 try:
     # with socketserver.TCPServer(("", PORT), Handler) as httpd:
